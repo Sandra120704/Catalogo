@@ -8,3 +8,6 @@ use CodeIgniter\Router\RouteCollection;
 $routes->get('/', 'Home::index');
 $routes->get('listar', 'CatalogoController::listar');
 
+$routes->get('catalogo/listar', 'CatalogoController::listar');
+$routes->get('catalogo/crear', 'CatalogoController::crear');
+$routes->post('catalogo/guardar', 'CatalogoController::guardar');
