@@ -5,8 +5,16 @@ use CodeIgniter\Model;
 
 class Catalogo extends Model
 {
-    protected $table = 'productosmascotas';
+    protected $table = 'productosmascota';
     protected $primaryKey = 'id_producto';
-    protected $allowedFields = ['nombre', 'categoria', 'marca', 'precio', 'stock','Fecha Registro'];
+    protected $allowedFields = [
+                'nombre',
+                'categoria',
+                'marca',
+                'precio',
+                'expediente' 
+    ];
 }
+    
+
      
