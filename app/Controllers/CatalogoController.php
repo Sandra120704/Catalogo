@@ -18,8 +18,12 @@ class CatalogoController extends BaseController
 
     public function crear()
     {
+        $model = new Catalogo();
+
         $data['header'] = view('layouts/header');
         $data['footer'] = view('layouts/footer');
+
+
 
         return view('catalogo/crear', $data);
     }
@@ -30,25 +34,81 @@ class CatalogoController extends BaseController
 
         // Manejo del archivo expediente
         $expediente = $this->request->getFile('expediente');
-        $newName = null;
+        $nombreArchivo = null;
 
         if ($expediente && $expediente->isValid() && !$expediente->hasMoved()) {
-            $newName = $expediente->getRandomName();
-            $expediente->move(WRITEPATH . 'uploads', $newName);
+            $nombreArchivo = $expediente->getRandomName();
+            $expediente->move(WRITEPATH . 'uploads', $nombreArchivo);
         }
 
-        // Datos del formulario
-        $dataProducto = [
-            'nombre'     => $this->request->getPost('nombre'),
-            'categoria'  => $this->request->getPost('categoria'),
-            'marca'      => $this->request->getPost('marca'),
-            'precio'     => $this->request->getPost('precio'),
-            'expediente' => $newName // Guardamos el nombre del archivo, no el objeto
+        // Datos a insertar
+        $data = [
+            'nombre'    => $this->request->getPost('nombre'),
+            'categoria' => $this->request->getPost('categoria'),
+            'marca'     => $this->request->getPost('marca'),
+            'precio'    => $this->request->getPost('precio'),
+            'expediente'=> $nombreArchivo
         ];
 
-        // Guardar en la base de datos
-        $model->insert($dataProducto);
+        $model->insert($data);
 
         return redirect()->to(base_url('catalogo/listar'));
     }
+
+    public function editar($id)
+    {
+        $model = new Catalogo();
+
+        $data['header'] = view('layouts/header');
+        $data['footer'] = view('layouts/footer');
+        $data['producto'] = $model->find($id);
+
+        return view('catalogo/editar', $data);
+    }
+
+    public function actualizar($id)
+    {
+        $model = new Catalogo();
+
+        // Manejo del archivo expediente
+        $expediente = $this->request->getFile('expediente');
+        $producto = $model->find($id); // obtener el registro actual
+        $nombreArchivo = $producto['expediente']; // mantener el anterior por defecto
+
+        if ($expediente && $expediente->isValid() && !$expediente->hasMoved()) {
+            $nombreArchivo = $expediente->getRandomName();
+            $expediente->move(WRITEPATH . 'uploads', $nombreArchivo);
+        }
+
+        // Datos a actualizar
+        $data = [
+            'nombre'    => $this->request->getPost('nombre'),
+            'categoria' => $this->request->getPost('categoria'),
+            'marca'     => $this->request->getPost('marca'),
+            'precio'    => $this->request->getPost('precio'),
+            'expediente'=> $nombreArchivo
+        ];
+
+        $model->update($id, $data);
+
+        return redirect()->to(base_url('catalogo/listar'));
+    }
+
+    public function eliminar($id)
+    {
+        $model = new Catalogo();
+        $producto = $model->find($id);
+
+        if($producto && $producto['expediente']){
+            $filePath = WRITEPATH . 'uploads/' . $producto['expediente'];
+            if(file_exists($filePath)){
+                unlink($filePath);
+            }
+
+            $model->delete($id);
+        }
+
+        return redirect()->to(base_url('catalogo/listar'));
+    }
+
 }

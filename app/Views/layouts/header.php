@@ -17,10 +17,10 @@
       <div class="collapse navbar-collapse" id="navbarNavDropdown">
         <ul class="navbar-nav">
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="#">Registrar</a>
+            <a class="nav-link active" aria-current="page" href="<?= base_url('catalogo/crear') ?>">Registrar</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Listar</a>
+            <a class="nav-link" href="<?= base_url('catalogo/listar') ?>">Listar</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="#">Pricing</a>

@@ -25,8 +25,8 @@
                 <?php endif; ?>
             </td>
               <td>
-                <a href="#" class="btn btn-sm btn-danger">Eliminar</a>
-                <a href="#" class="btn btn-sm btn-info">Editar</a>
+                <a href="<?= base_url('catalogo/eliminar/'.$producto['id_producto']) ?>" class="btn btn-sm btn-danger">Eliminar</a>
+                <a href="<?= base_url('catalogo/editar/'.$producto['id_producto']) ?>" class="btn btn-sm btn-info">Editar</a>
               </td>
         </tr>
         <?php endforeach; ?>
